@@ -2,11 +2,11 @@
   "name": "real-estate-api",
   "version": "1.0.0",
   "description": "",
-  "main": "server.ts",
+  "main": "dist/server.js",
   "scripts": {
     "build": "tsc",
     "start": "nodemon server.ts",
-    "start:prod": "node server.ts"
+    "start:prod": "node dist/server.js"
   },
   "author": "",
   "license": "ISC",
