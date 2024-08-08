@@ -11,7 +11,7 @@ process.on("uncaughtException", (err) => {
 });
 
 const db =
-  "mongodb+srv://mosesmwangime:9SPqAj4JOaXBxDrI@cluster0.sqjq7km.mongodb.net/natours?retryWrites=true&w=majority&appName=Cluster0";
+  "mongodb+srv://mosesmwangime:9SPqAj4JOaXBxDrI@cluster0.sqjq7km.mongodb.net/delivery?retryWrites=true&w=majority&appName=Cluster0";
 mongoose
   .connect(db)
   .then((con) => {
