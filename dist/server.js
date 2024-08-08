@@ -12,7 +12,7 @@ process.on("uncaughtException", (err) => {
     console.error(err.name, err.message);
     process.exit(1);
 });
-const db = "mongodb+srv://mosesmwangime:9SPqAj4JOaXBxDrI@cluster0.sqjq7km.mongodb.net/delivery?retryWrites=true&w=majority&appName=Cluster0";
+const db = "mongodb+srv://mosesmwangime:9SPqAj4JOaXBxDrI@cluster0.sqjq7km.mongodb.net/real-estate?retryWrites=true&w=majority&appName=Cluster0";
 mongoose_1.default
     .connect(db)
     .then((con) => {
