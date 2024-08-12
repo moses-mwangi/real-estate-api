@@ -38,6 +38,17 @@ app.use("/agents", express_1.default.static(path_1.default.join(__dirname, "publ
         }
     },
 }));
+app.use("/assets", express_1.default.static(path_1.default.join(__dirname, "public/assets"), {
+    setHeaders: (res, filePath) => {
+        const mimeType = mime_types_1.default.lookup(filePath);
+        if (mimeType) {
+            res.setHeader("Content-Type", mimeType);
+        }
+        else {
+            console.warn(`Cannot determine MIME type for file: ${filePath}`);
+        }
+    },
+}));
 app.use((req, res, next) => {
     console.log("Testing middleware");
     next();
