@@ -1,0 +1,20 @@
+[
+  {
+    "name": "Michael Rutter",
+    "role": "Buying Agent",
+    "image": "/agents/agent-1.png",
+    "information": "Whether it is working with a first time homebuyer, a luxury home listing or a seasoned inve..."
+  },
+  {
+    "name": "Janet Richmond",
+    "role": "Selling Agent",
+    "image": "/agents/agent-2.png",
+    "information": "Janet’s knowledge, honesty, integrity, and fairness have been evident throughout her career."
+  },
+  {
+    "name": "Mariah Barlow",
+    "role": "Lead Agent",
+    "image": "/agents/agent-3.png",
+    "information": "As a fourth generation realtor, I was raised in a family where real estate was the primary..."
+  }
+]
