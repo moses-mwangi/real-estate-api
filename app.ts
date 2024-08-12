@@ -11,7 +11,11 @@ import path from "path";
 const app = express();
 app.use(express.json());
 
-const allowedOrigins = ["http://localhost:3000"];
+const allowedOrigins = [
+  "http://localhost:3000",
+  "https://real-estate-mu-peach.vercel.app",
+  "https://real-estate-mu-peach.vercel.app/",
+];
 
 const corsOptions = {
   origin: (
