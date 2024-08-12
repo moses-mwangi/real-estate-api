@@ -1,0 +1,123 @@
+[
+  {
+    "address": "Burj Khalifa, Downtown Dubai",
+    "city": "Dubai",
+    "zipcode": "00001",
+    "price": 2500000,
+    "type": "Apartment",
+    "bedrooms": 3,
+    "bathrooms": 4,
+    "garages": 3,
+    "size": 2100,
+    "about": "Signature Villas For Sale In Palm Jumeirah",
+    "image": [
+      "/assets/pro 1.png",
+      "/assets/pro 2.png",
+      "/assets/pro 3.png",
+      "/assets/pro 4.png",
+      "/assets/pro 6.png"
+    ],
+    "description": "Luxurious 3-bedroom apartment in the iconic Burj Khalifa, offering breathtaking views of the Dubai skyline.",
+    "position": [25.1972, 55.2744]
+  },
+  {
+    "address": "Palm Jumeirah, Frond B",
+    "city": "Dubai",
+    "zipcode": "00002",
+    "price": 5000000,
+    "type": "Villa",
+    "bedrooms": 5,
+    "bathrooms": 6,
+    "garages": 2,
+    "size": 5000,
+    "about": "Luxury 6 Bed Mansion in Palm Jumeirah",
+    "image": [
+      "/assets/image copy 3.png",
+      "/assets/image copy 6.png",
+      "/assets/image copy 10.png",
+      "/assets/image copy.png"
+    ],
+    "description": "Exclusive 5-bedroom villa located on the prestigious Palm Jumeirah, with private beach access and stunning sea views.",
+    "position": [25.112, 55.139]
+  },
+  {
+    "address": "Jumeirah Beach Residence, JBR Walk",
+    "city": "Dubai",
+    "zipcode": "00003",
+    "price": 1500000,
+    "type": "Apartment",
+    "bedrooms": 2,
+    "bathrooms": 3,
+    "garages": 4,
+    "size": 1600,
+    "about": "Attractive Lagoonside Private Pool Pent...",
+    "image": [
+      "/assets/image copy 2.png",
+      "/assets/image copy.png",
+      "/assets/image copy 11.png",
+      "/assets/image copy 1.png"
+    ],
+    "description": "Modern 2-bedroom apartment in Jumeirah Beach Residence, just steps away from the beach and vibrant nightlife.",
+    "position": [25.08, 55.1402]
+  },
+  {
+    "address": "Emirates Hills, Sector E",
+    "city": "Dubai",
+    "zipcode": "00004",
+    "price": 8000000,
+    "type": "Mansion",
+    "bedrooms": 7,
+    "bathrooms": 9,
+    "garages": 5,
+    "size": 12000,
+    "about": "Stunning Mansion In The Heart Of Dubai",
+    "image": [
+      "/assets/image copy 4.png",
+      "/assets/image copy 2.png",
+      "/assets/image copy.png",
+      "/assets/image copy 9.png"
+    ],
+    "description": "Palatial 7-bedroom mansion in the prestigious Emirates Hills, featuring a private pool, garden, and golf course views.",
+    "position": [25.0679, 55.1683]
+  },
+  {
+    "address": "Downtown Dubai, Opera District",
+    "city": "Dubai",
+    "zipcode": "00005",
+    "price": 3500000,
+    "type": "Penthouse",
+    "bedrooms": 4,
+    "bathrooms": 5,
+    "garages": 4,
+    "size": 3200,
+    "about": "Apartment in GEMZ in Al Furjan",
+    "image": [
+      "/assets/image copy.png",
+      "/assets/image copy 11.png",
+      "/assets/image copy 6.png",
+      "/assets/image copy 5.png"
+    ],
+    "description": "Elegant 4-bedroom penthouse in the heart of Downtown Dubai, with panoramic views of the Burj Khalifa and Dubai Fountain.",
+    "position": [25.1935, 55.2796]
+  },
+  {
+    "address": "Al Barari, The Reserve",
+    "city": "Dubai",
+    "zipcode": "00006",
+    "price": 6000000,
+    "type": "Villa",
+    "bedrooms": 6,
+    "bathrooms": 7,
+    "garages": 5,
+    "size": 7500,
+    "about": "Luxury Villa In Umm Suqeim",
+    "image": [
+      "/assets/image copy 10.png",
+      "/assets/image copy 11.png",
+      "/assets/image copy 7.png",
+      "/assets/image copy 8.png"
+    ],
+    "description": "Serene 6-bedroom villa in the lush green community of Al Barari, offering a peaceful retreat with luxurious amenities.",
+    "position": [25.1005, 55.3659]
+  }
+]

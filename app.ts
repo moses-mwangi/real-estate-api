@@ -43,6 +43,20 @@ app.use(
   })
 );
 
+app.use(
+  "/assets",
+  express.static(path.join(__dirname, "public/assets"), {
+    setHeaders: (res, filePath) => {
+      const mimeType = mimeTypes.lookup(filePath);
+      if (mimeType) {
+        res.setHeader("Content-Type", mimeType);
+      } else {
+        console.warn(`Cannot determine MIME type for file: ${filePath}`);
+      }
+    },
+  })
+);
+
 app.use((req, res, next) => {
   console.log("Testing middleware");
   next();

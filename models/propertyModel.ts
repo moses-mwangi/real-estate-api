@@ -2,18 +2,18 @@ import mongoose, { Schema, model } from "mongoose";
 
 const propertyShema: Schema = new Schema({
   image: { type: [String] },
-  descrption: { type: String },
+  description: { type: String },
   about: { type: String },
   type: { type: String },
   bathrooms: { type: Number },
   bedrooms: { type: Number },
-  Garages: { type: Number },
-  area: { type: Number },
-  createdAt: { type: Date },
+  garages: { type: Number },
+  createdAt: { type: Date, default: new Date() },
   price: { type: Number },
   city: { type: String },
   zip: { type: Number },
-  Address: { type: String },
+  address: { type: String },
+  position: [Number],
 });
 
 const Property = model("Property", propertyShema);
