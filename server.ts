@@ -12,6 +12,7 @@ process.on("uncaughtException", (err) => {
 
 const db =
   "mongodb+srv://mosesmwangime:9SPqAj4JOaXBxDrI@cluster0.sqjq7km.mongodb.net/real-estate?retryWrites=true&w=majority&appName=Cluster0";
+
 mongoose
   .connect(db)
   .then((con) => {
