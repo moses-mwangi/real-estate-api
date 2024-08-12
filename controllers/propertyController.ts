@@ -11,3 +11,13 @@ export const getProperties = catchAsync(async (req: Request, res: Response) => {
     data: properties,
   });
 });
+
+export const getProperty = catchAsync(async (req: Request, res: Response) => {
+  const property = await Property.findById(req.params.id);
+
+  res.status(200).json({
+    status: "succefully",
+
+    data: property,
+  });
+});
