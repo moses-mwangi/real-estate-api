@@ -14,7 +14,11 @@ const errorController_1 = __importDefault(require("./controllers/errorController
 const path_1 = __importDefault(require("path"));
 const app = (0, express_1.default)();
 app.use(express_1.default.json());
-const allowedOrigins = ["http://localhost:3000"];
+const allowedOrigins = [
+    "https://real-estate-mu-peach.vercel.app",
+    "http://localhost:3000",
+    "https://real-estate-mu-peach.vercel.app/",
+];
 const corsOptions = {
     origin: (origin, callback) => {
         if (allowedOrigins.includes(origin) || !origin) {
