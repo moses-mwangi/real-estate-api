@@ -6,12 +6,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const cors_1 = __importDefault(require("cors"));
 const mime_types_1 = __importDefault(require("mime-types"));
+const path_1 = __importDefault(require("path"));
+const appError_1 = __importDefault(require("./utils/appError"));
+const errorController_1 = __importDefault(require("./controllers/errorController"));
 const usersRoute_1 = __importDefault(require("./routes/usersRoute"));
 const agentRoute_1 = __importDefault(require("./routes/agentRoute"));
 const propertyRoute_1 = __importDefault(require("./routes/propertyRoute"));
-const appError_1 = __importDefault(require("./utils/appError"));
-const errorController_1 = __importDefault(require("./controllers/errorController"));
-const path_1 = __importDefault(require("path"));
+const toursRoute_1 = __importDefault(require("./routes/toursRoute"));
 const app = (0, express_1.default)();
 app.use(express_1.default.json());
 const allowedOrigins = [
@@ -60,6 +61,7 @@ app.use((req, res, next) => {
 app.use("/api/users", usersRoute_1.default);
 app.use("/api/agents", agentRoute_1.default);
 app.use("/api/property", propertyRoute_1.default);
+app.use("/api/tours", toursRoute_1.default);
 app.get("/", (req, res) => {
     res.send("Welcome to the API");
 });

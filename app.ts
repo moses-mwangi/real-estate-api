@@ -1,12 +1,14 @@
 import express from "express";
 import cors from "cors";
 import mimeTypes from "mime-types";
+import path from "path";
+
+import AppError from "./utils/appError";
+import globalErrorHandler from "./controllers/errorController";
 import usersRoute from "./routes/usersRoute";
 import agentRoute from "./routes/agentRoute";
 import propertyRoute from "./routes/propertyRoute";
-import AppError from "./utils/appError";
-import globalErrorHandler from "./controllers/errorController";
-import path from "path";
+import tourRoute from "./routes/toursRoute";
 
 const app = express();
 app.use(express.json());
@@ -69,6 +71,7 @@ app.use((req, res, next) => {
 app.use("/api/users", usersRoute);
 app.use("/api/agents", agentRoute);
 app.use("/api/property", propertyRoute);
+app.use("/api/tours", tourRoute);
 
 app.get("/", (req, res) => {
   res.send("Welcome to the API");
