@@ -7,8 +7,6 @@ const express_1 = __importDefault(require("express"));
 const cors_1 = __importDefault(require("cors"));
 const mime_types_1 = __importDefault(require("mime-types"));
 const path_1 = __importDefault(require("path"));
-// import config from "config";
-/////
 const appError_1 = __importDefault(require("./utils/appError"));
 const errorController_1 = __importDefault(require("./controllers/errorController"));
 const usersRoute_1 = __importDefault(require("./routes/usersRoute"));
@@ -17,27 +15,9 @@ const agentRoute_1 = __importDefault(require("./routes/agentRoute"));
 const propertyRoute_1 = __importDefault(require("./routes/propertyRoute"));
 const toursRoute_1 = __importDefault(require("./routes/toursRoute"));
 const cookie_parser_1 = __importDefault(require("cookie-parser"));
-// import "./config/passport";
 const app = (0, express_1.default)();
 app.use(express_1.default.json());
-// app.use(
-//   session({
-//     // secret: config.get<string>("sessionSecret"),
-//     secret: "XFh//pPG4zrBeLBIWgv73NwaypFz4NJJFeOclYf3OEE=",
-//     resave: false,
-//     saveUninitialized: true,
-//   })
-// );
 app.use((0, cookie_parser_1.default)());
-// app.use(
-//   cookieSession({
-//     name: "session",
-//     keys: ["cyberwolves"],
-//     maxAge: 24 * 60 * 60 * 100,
-//   })
-// );
-// app.use(passport.initialize());
-// app.use(passport.session());
 const allowedOrigins = [
     "https://real-estate-mu-peach.vercel.app",
     "http://localhost:3000",

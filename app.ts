@@ -3,12 +3,9 @@ import cors from "cors";
 import mimeTypes from "mime-types";
 import path from "path";
 
-/////
 import passport from "passport";
 import session from "express-session";
 import cookieSession from "cookie-session";
-// import config from "config";
-/////
 
 import AppError from "./utils/appError";
 import globalErrorHandler from "./controllers/errorController";
@@ -19,31 +16,9 @@ import propertyRoute from "./routes/propertyRoute";
 import tourRoute from "./routes/toursRoute";
 import cookieParser from "cookie-parser";
 
-// import "./config/passport";
-
 const app = express();
 app.use(express.json());
 app.use(cookieParser());
-
-// app.use(
-//   session({
-//     // secret: config.get<string>("sessionSecret"),
-//     secret: "XFh//pPG4zrBeLBIWgv73NwaypFz4NJJFeOclYf3OEE=",
-//     resave: false,
-//     saveUninitialized: true,
-//   })
-// );
-
-// app.use(
-//   cookieSession({
-//     name: "session",
-//     keys: ["cyberwolves"],
-//     maxAge: 24 * 60 * 60 * 100,
-//   })
-// );
-
-// app.use(passport.initialize());
-// app.use(passport.session());
 
 const allowedOrigins = [
   "https://real-estate-mu-peach.vercel.app",
