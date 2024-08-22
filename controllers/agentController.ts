@@ -11,3 +11,12 @@ export const getAgents = catchAsync(async (req: Request, res: Response) => {
     data: agents,
   });
 });
+
+export const getAgent = catchAsync(async (req: Request, res: Response) => {
+  const agent = await Agent.findById(req.params.id);
+
+  res.status(200).json({
+    status: "succefully",
+    agent,
+  });
+});

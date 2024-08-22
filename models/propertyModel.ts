@@ -14,6 +14,13 @@ const propertyShema: Schema = new Schema({
   zip: { type: Number },
   address: { type: String },
   position: [Number],
+
+  agent: [
+    {
+      type: mongoose.Schema.ObjectId,
+      ref: "Agent",
+    },
+  ],
 });
 
 const Property = model("Property", propertyShema);

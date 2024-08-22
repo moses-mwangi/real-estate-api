@@ -18,7 +18,8 @@
       "/assets/pro 6.png"
     ],
     "description": "Luxurious 3-bedroom apartment in the iconic Burj Khalifa, offering breathtaking views of the Dubai skyline.This home features hardwood floors throughout, brand new bathrooms, newer EIK, modern front-load washer/dryer, full dining room, large living area, 3 spacious bedrooms and plenty of storage. Master bedroom includes both a standard closet and custom closet wall unit.",
-    "position": [25.1972, 55.2744]
+    "position": [25.1972, 55.2744],
+    "agent": ["66b9d361ae8878ca77318284"]
   },
   {
     "address": "Palm Jumeirah, Frond B",
@@ -39,7 +40,8 @@
       "/assets/pro 3.png"
     ],
     "description": "Exclusive 5-bedroom villa located on the prestigious Palm Jumeirah, with private beach access and stunning sea views.This home features hardwood floors throughout, brand new bathrooms, newer EIK, modern front-load washer/dryer, full dining room, large living area, 3 spacious bedrooms and plenty of storage. Master bedroom includes both a standard closet and custom closet wall unit.",
-    "position": [25.112, 55.139]
+    "position": [25.112, 55.139],
+    "agent": ["66b9d361ae8878ca77318285"]
   },
   {
     "address": "Jumeirah Beach Residence, JBR Walk",
@@ -60,7 +62,8 @@
       "/assets/image copy 6.png"
     ],
     "description": "Modern 2-bedroom apartment in Jumeirah Beach Residence, just steps away from the beach and vibrant nightlife.This home features hardwood floors throughout, brand new bathrooms, newer EIK, modern front-load washer/dryer, full dining room, large living area, 3 spacious bedrooms and plenty of storage. Master bedroom includes both a standard closet and custom closet wall unit.",
-    "position": [25.08, 55.1402]
+    "position": [25.08, 55.1402],
+    "agent": ["66b9d361ae8878ca77318286"]
   },
   {
     "address": "Emirates Hills, Sector E",
@@ -68,8 +71,8 @@
     "zipcode": "00004",
     "price": 8000000,
     "type": "Mansion",
-    "bedrooms": 7,
-    "bathrooms": 9,
+    "bedrooms": 6,
+    "bathrooms": 6,
     "garages": 5,
     "size": 12000,
     "about": "Stunning Mansion In The Heart Of Dubai",
@@ -81,7 +84,8 @@
       "/assets/image copy 11.png"
     ],
     "description": "Palatial 7-bedroom mansion in the prestigious Emirates Hills, featuring a private pool, garden, and golf course views.This home features hardwood floors throughout, brand new bathrooms, newer EIK, modern front-load washer/dryer, full dining room, large living area, 3 spacious bedrooms and plenty of storage. Master bedroom includes both a standard closet and custom closet wall unit.",
-    "position": [25.0679, 55.1683]
+    "position": [25.0679, 55.1683],
+    "agent": ["66b9d361ae8878ca77318284"]
   },
   {
     "address": "Downtown Dubai, Opera District",
@@ -102,7 +106,8 @@
       "/assets/image copy 6.png"
     ],
     "description": "Elegant 4-bedroom penthouse in the heart of Downtown Dubai, with panoramic views of the Burj Khalifa and Dubai Fountain.This home features hardwood floors throughout, brand new bathrooms, newer EIK, modern front-load washer/dryer, full dining room, large living area, 3 spacious bedrooms and plenty of storage. Master bedroom includes both a standard closet and custom closet wall unit.",
-    "position": [25.1935, 55.2796]
+    "position": [25.1935, 55.2796],
+    "agent": ["66b9d361ae8878ca77318285"]
   },
   {
     "address": "Al Barari, The Reserve",
@@ -110,8 +115,8 @@
     "zipcode": "00006",
     "price": 6000000,
     "type": "Villa",
-    "bedrooms": 6,
-    "bathrooms": 7,
+    "bedrooms": 5,
+    "bathrooms": 5,
     "garages": 5,
     "size": 7500,
     "about": "Luxury Villa In Umm Suqeim",
@@ -123,6 +128,7 @@
       "/assets/image copy 3.png"
     ],
     "description": "Serene 6-bedroom villa in the lush green community of Al Barari, offering a peaceful retreat with luxurious amenities.This home features hardwood floors throughout, brand new bathrooms, newer EIK, modern front-load washer/dryer, full dining room, large living area, 3 spacious bedrooms and plenty of storage. Master bedroom includes both a standard closet and custom closet wall unit.",
-    "position": [25.1005, 55.3659]
+    "position": [25.1005, 55.3659],
+    "agent": ["66b9d361ae8878ca77318286"]
   }
 ]
