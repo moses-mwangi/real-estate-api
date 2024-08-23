@@ -6,6 +6,33 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.postProperty = exports.getProperty = exports.getProperties = void 0;
 const catchAsync_1 = __importDefault(require("../utils/catchAsync"));
 const propertyModel_1 = __importDefault(require("../models/propertyModel"));
+const multer_1 = __importDefault(require("multer"));
+const cloudinary_1 = require("cloudinary");
+const multer_storage_cloudinary_1 = require("multer-storage-cloudinary");
+cloudinary_1.v2.config({
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET,
+});
+const storage = new multer_storage_cloudinary_1.CloudinaryStorage({
+    cloudinary: cloudinary_1.v2,
+    params: async (req, file) => {
+        const extension = file.mimetype.split("/")[1];
+        const allowedFormats = ["jpg", "png", "jpeg"];
+        if (allowedFormats.includes(extension)) {
+            return {
+                folder: "real-estate-images",
+                format: extension,
+                public_id: `image_${Date.now()}`,
+                resource_type: "image",
+            };
+        }
+        else {
+            throw new Error("Invalid file format");
+        }
+    },
+});
+const upload = (0, multer_1.default)({ storage: storage });
 exports.getProperties = (0, catchAsync_1.default)(async (req, res) => {
     const properties = await propertyModel_1.default.find().populate("agent");
     res.status(200).json({
@@ -21,10 +48,33 @@ exports.getProperty = (0, catchAsync_1.default)(async (req, res) => {
         data: property,
     });
 });
-exports.postProperty = (0, catchAsync_1.default)(async (req, res) => {
-    const property = await propertyModel_1.default.create(req.body);
-    res.status(200).json({
-        status: "succefully created",
-        property,
-    });
-});
+// export const postProperty = catchAsync(async (req: Request, res: Response) => {
+//   const property = await Property.create(req.body);
+//   res.status(200).json({
+//     status: "succefully created",
+//     property,
+//   });
+// });
+exports.postProperty = [
+    upload.array("images", 5),
+    (0, catchAsync_1.default)(async (req, res) => {
+        if (!req.files || !Array.isArray(req.files)) {
+            return res.status(400).json({ message: "No files uploaded" });
+        }
+        try {
+            const imageUrls = req.files.map((file) => file.path);
+            const newProperty = await propertyModel_1.default.create({
+                ...req.body,
+                image: imageUrls,
+            });
+            res.status(201).json({
+                status: "success",
+                property: newProperty,
+            });
+        }
+        catch (error) {
+            console.error("Error saving property:", error);
+            res.status(500).json({ message: "Error saving property" });
+        }
+    }),
+];

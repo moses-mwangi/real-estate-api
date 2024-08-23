@@ -23,6 +23,7 @@ app.use(cookieParser());
 const allowedOrigins = [
   "https://real-estate-mu-peach.vercel.app",
   "http://localhost:3000",
+  "http://localhost:3001",
   "https://real-estate-mu-peach.vercel.app/",
 ];
 
@@ -72,7 +73,9 @@ app.use(
 
 app.use((req, res, next) => {
   console.log("Testing middleware");
-  console.log(req.user);
+  console.log(process.env.CLOUDINARY_API_KEY);
+  console.log(process.env.CLOUDINARY_CLOUD_NAME);
+  console.log(process.env.CLOUDINARY_API_SECRET);
   next();
 });
 

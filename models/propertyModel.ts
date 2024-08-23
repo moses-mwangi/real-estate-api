@@ -13,12 +13,13 @@ const propertyShema: Schema = new Schema({
   city: { type: String },
   zip: { type: Number },
   address: { type: String },
-  position: [Number],
+  position: { type: [Number], default: [-1.181467, 36.990274] },
 
   agent: [
     {
       type: mongoose.Schema.ObjectId,
       ref: "Agent",
+      default: ["66b9d361ae8878ca77318285"],
     },
   ],
 });
