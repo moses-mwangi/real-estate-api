@@ -16,13 +16,21 @@ const propertyShema: Schema = new Schema({
   position: { type: [Number], default: [-1.181467, 36.990274] },
   size: { type: Number, default: 100 },
 
-  agent: [
+  userId: [
     {
       type: mongoose.Schema.ObjectId,
-      ref: "Agent",
+      ref: "User",
       default: ["66b9d361ae8878ca77318285"],
     },
   ],
+
+  // agent: [
+  //   {
+  //     type: mongoose.Schema.ObjectId,
+  //     ref: "Agent",
+  //     default: ["66b9d361ae8878ca77318285"],
+  //   },
+  // ],
 });
 
 const Property = model("Property", propertyShema);

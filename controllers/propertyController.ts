@@ -34,7 +34,8 @@ const storage = new CloudinaryStorage({
 const upload = multer({ storage: storage });
 
 export const getProperties = catchAsync(async (req: Request, res: Response) => {
-  const properties = await Property.find().populate("agent");
+  const properties = await Property.find().populate("userId");
+  // const properties = await Property.find().populate("agent");
 
   res.status(200).json({
     status: "succefully",

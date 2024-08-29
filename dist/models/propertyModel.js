@@ -39,13 +39,20 @@ const propertyShema = new mongoose_1.Schema({
     address: { type: String },
     position: { type: [Number], default: [-1.181467, 36.990274] },
     size: { type: Number, default: 100 },
-    agent: [
+    userId: [
         {
             type: mongoose_1.default.Schema.ObjectId,
-            ref: "Agent",
+            ref: "User",
             default: ["66b9d361ae8878ca77318285"],
         },
     ],
+    // agent: [
+    //   {
+    //     type: mongoose.Schema.ObjectId,
+    //     ref: "Agent",
+    //     default: ["66b9d361ae8878ca77318285"],
+    //   },
+    // ],
 });
 const Property = (0, mongoose_1.model)("Property", propertyShema);
 exports.default = Property;
