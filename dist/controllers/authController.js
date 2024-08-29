@@ -3,9 +3,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.forgotPassword = exports.getMe = exports.protect = exports.loginUser = exports.registerUser = void 0;
+exports.updatePassword = exports.resetPassword = exports.forgotPassword = exports.getMe = exports.protect = exports.loginUser = exports.registerUser = void 0;
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
+const crypto_1 = __importDefault(require("crypto"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+const email_1 = require("../utils/email");
 const catchAsync_1 = __importDefault(require("../utils/catchAsync"));
 const userModel_1 = __importDefault(require("../models/userModel"));
 const appError_1 = __importDefault(require("../utils/appError"));
@@ -72,21 +74,17 @@ exports.protect = (0, catchAsync_1.default)(async function (req, res, next) {
     if (!token) {
         return next(new appError_1.default("You are not logged in! Please log in to get access.", 401));
     }
-    console.log("Token: ", token);
     const decoded = await jwtVerify(token, "this-is-my-jwt-secret-moses-muni");
-    console.log("Decoded JWT: ", decoded);
     const currentUser = await userModel_1.default.findById(decoded.id);
     if (!currentUser) {
         return next(new appError_1.default("The user belonging to this token no longer exists.", 401));
     }
-    // console.log("Current User: ", currentUser);
     req.user = currentUser;
     next();
 });
 const getMe = (req, res, next) => {
     try {
         const user = req.user;
-        // console.log("Current User: ", user);
         if (!user) {
             return next(new appError_1.default("User not found", 404));
         }
@@ -98,11 +96,75 @@ const getMe = (req, res, next) => {
     }
 };
 exports.getMe = getMe;
-exports.forgotPassword = (0, catchAsync_1.default)(async function (req, res, next) {
-    res.status(200).json({
-        status: "success",
-        data: {
-            data: "forgotpassword",
-        },
+exports.forgotPassword = (0, catchAsync_1.default)(async (req, res, next) => {
+    // 1) Get user based on posted email
+    const user = await userModel_1.default.findOne({ email: req.body.email });
+    if (!user) {
+        return next(new appError_1.default("There is no user with that email address.", 404));
+    }
+    // 2) Generate a random reset token
+    const resetToken = crypto_1.default.randomBytes(32).toString("hex");
+    console.log(resetToken);
+    user.passwordResetToken = crypto_1.default
+        .createHash("sha256")
+        .update(resetToken)
+        .digest("hex");
+    user.passwordResetExpires = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes
+    await user.save({ validateBeforeSave: false });
+    //3) Send the email with the reset token
+    const resetURL = `http://localhost:3001/resetPassword?token=${resetToken}`;
+    console.log("ResetUrl:", resetURL);
+    const message = `Forgot your password? Submit a PATCH request with your new password and passwordConfirm to: ${resetURL}.\nIf you didn't forget your password, please ignore this email!`;
+    try {
+        await (0, email_1.sendEmail)({
+            email: user.email,
+            subject: "Your password reset token (valid for 10 min)",
+            message,
+        });
+        res.status(200).json({
+            status: "success",
+            message: "Token sent to email!",
+        });
+    }
+    catch (err) {
+        user.passwordResetToken = undefined;
+        user.passwordResetExpires = undefined;
+        await user.save({ validateBeforeSave: false });
+        return next(new appError_1.default("There was an error sending the email. Try again later!", 500));
+    }
+});
+exports.resetPassword = (0, catchAsync_1.default)(async (req, res, next) => {
+    // 1) Get user based on the token
+    const hashedToken = crypto_1.default
+        .createHash("sha256")
+        .update(req.params.token)
+        .digest("hex");
+    const user = await userModel_1.default.findOne({
+        passwordResetToken: hashedToken,
+        passwordResetExpires: { $gte: Date.now() },
     });
+    // 2) If token has not expired and there is a user, set the new password
+    if (!user) {
+        return next(new appError_1.default("Token is invalid or has expired", 400));
+    }
+    user.password = req.body.password;
+    user.passwordConfirm = req.body.passwordConfirm;
+    user.passwordResetToken = undefined;
+    await user.save();
+    // 3) Log the user in, send JWT
+    createSendToken(user, 200, res);
+});
+exports.updatePassword = (0, catchAsync_1.default)(async (req, res, next) => {
+    const user = await userModel_1.default.findById(req.user._id).select("+password");
+    if (!user) {
+        return next(new appError_1.default("No user with that ID found", 401));
+    }
+    const isPasswordCorrect = await bcryptjs_1.default.compare(req.body.passwordCurrent, user.password);
+    if (!isPasswordCorrect) {
+        return next(new appError_1.default("Your current password is incorrect.", 401));
+    }
+    user.password = req.body.password;
+    user.passwordConfirm = req.body.passwordConfirm;
+    await user.save();
+    createSendToken(user, 200, res);
 });

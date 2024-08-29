@@ -53,15 +53,6 @@ export const getProperty = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
-// export const postProperty = catchAsync(async (req: Request, res: Response) => {
-//   const property = await Property.create(req.body);
-
-//   res.status(200).json({
-//     status: "succefully created",
-//     property,
-//   });
-// });
-
 export const postProperty = [
   upload.array("images", 5),
   catchAsync(async (req: Request, res: Response) => {

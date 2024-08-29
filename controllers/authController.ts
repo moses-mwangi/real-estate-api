@@ -1,6 +1,9 @@
 import { NextFunction, Request, Response } from "express";
 import bcrypt from "bcryptjs";
+import crypto from "crypto";
 import jwt from "jsonwebtoken";
+import { sendEmail } from "../utils/email";
+
 import catchAsync from "../utils/catchAsync";
 import User, { IUser } from "../models/userModel";
 import AppError from "../utils/appError";
@@ -111,14 +114,10 @@ export const protect = catchAsync(async function (
     );
   }
 
-  console.log("Token: ", token);
-
   const decoded: any = await jwtVerify(
     token,
     "this-is-my-jwt-secret-moses-muni"
   );
-
-  console.log("Decoded JWT: ", decoded);
 
   const currentUser: IUser | null = await User.findById(decoded.id);
   if (!currentUser) {
@@ -127,15 +126,14 @@ export const protect = catchAsync(async function (
     );
   }
 
-  // console.log("Current User: ", currentUser);
   req.user = currentUser;
+
   next();
 });
 
 export const getMe = (req: Request, res: Response, next: NextFunction) => {
   try {
     const user = (req as any).user;
-    // console.log("Current User: ", user);
 
     if (!user) {
       return next(new AppError("User not found", 404));
@@ -148,15 +146,115 @@ export const getMe = (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
-export const forgotPassword = catchAsync(async function (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) {
-  res.status(200).json({
-    status: "success",
-    data: {
-      data: "forgotpassword",
-    },
-  });
-});
+export const forgotPassword = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    // 1) Get user based on posted email
+    const user = await User.findOne({ email: req.body.email });
+
+    if (!user) {
+      return next(
+        new AppError("There is no user with that email address.", 404)
+      );
+    }
+
+    // 2) Generate a random reset token
+    const resetToken = crypto.randomBytes(32).toString("hex");
+
+    console.log(resetToken);
+
+    user.passwordResetToken = crypto
+      .createHash("sha256")
+      .update(resetToken)
+      .digest("hex");
+
+    user.passwordResetExpires = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes
+
+    await user.save({ validateBeforeSave: false });
+
+    //3) Send the email with the reset token
+    const resetURL = `http://localhost:3001/resetPassword?token=${resetToken}`;
+
+    console.log("ResetUrl:", resetURL);
+
+    const message = `Forgot your password? Submit a PATCH request with your new password and passwordConfirm to: ${resetURL}.\nIf you didn't forget your password, please ignore this email!`;
+
+    try {
+      await sendEmail({
+        email: user.email,
+        subject: "Your password reset token (valid for 10 min)",
+        message,
+      });
+
+      res.status(200).json({
+        status: "success",
+        message: "Token sent to email!",
+      });
+    } catch (err) {
+      user.passwordResetToken = undefined;
+      user.passwordResetExpires = undefined;
+
+      await user.save({ validateBeforeSave: false });
+
+      return next(
+        new AppError(
+          "There was an error sending the email. Try again later!",
+          500
+        )
+      );
+    }
+  }
+);
+
+export const resetPassword = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    // 1) Get user based on the token
+    const hashedToken = crypto
+      .createHash("sha256")
+      .update(req.params.token)
+      .digest("hex");
+
+    const user = await User.findOne({
+      passwordResetToken: hashedToken,
+      passwordResetExpires: { $gte: Date.now() },
+    });
+
+    // 2) If token has not expired and there is a user, set the new password
+    if (!user) {
+      return next(new AppError("Token is invalid or has expired", 400));
+    }
+    user.password = req.body.password;
+    user.passwordConfirm = req.body.passwordConfirm;
+    user.passwordResetToken = undefined;
+
+    await user.save();
+
+    // 3) Log the user in, send JWT
+    createSendToken(user, 200, res);
+  }
+);
+
+export const updatePassword = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const user = await User.findById((req as any).user._id).select("+password");
+
+    if (!user) {
+      return next(new AppError("No user with that ID found", 401));
+    }
+
+    const isPasswordCorrect = await bcrypt.compare(
+      req.body.passwordCurrent,
+      user.password
+    );
+
+    if (!isPasswordCorrect) {
+      return next(new AppError("Your current password is incorrect.", 401));
+    }
+
+    user.password = req.body.password;
+    user.passwordConfirm = req.body.passwordConfirm;
+
+    await user.save();
+
+    createSendToken(user, 200, res);
+  }
+);

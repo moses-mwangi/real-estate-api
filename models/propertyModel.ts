@@ -14,6 +14,7 @@ const propertyShema: Schema = new Schema({
   zip: { type: Number },
   address: { type: String },
   position: { type: [Number], default: [-1.181467, 36.990274] },
+  size: { type: Number, default: 100 },
 
   agent: [
     {
