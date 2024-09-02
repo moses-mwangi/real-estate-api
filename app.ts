@@ -1,13 +1,7 @@
-import express, { Request } from "express";
+import express from "express";
 import cors from "cors";
 import mimeTypes from "mime-types";
 import path from "path";
-
-import passport from "passport";
-import session from "express-session";
-import cookieSession from "cookie-session";
-
-import { protect } from "./controllers/authController";
 
 import AppError from "./utils/appError";
 import globalErrorHandler from "./controllers/errorController";
@@ -18,45 +12,9 @@ import propertyRoute from "./routes/propertyRoute";
 import tourRoute from "./routes/toursRoute";
 import cookieParser from "cookie-parser";
 
-import multer from "multer";
-import { CloudinaryStorage } from "multer-storage-cloudinary";
-import { v2 as cloudinary } from "cloudinary";
-import User from "./models/userModel";
-// import User from "../models/userModel"; // Adjust the path as necessary
-// import AppError from "../utils/appError"; // Adjust the path as necessary
-
 const app = express();
 app.use(express.json());
 app.use(cookieParser());
-
-// Cloudinary configuration
-cloudinary.config({
-  cloud_name: "dijocmuzg",
-  api_key: "125136887318797",
-  api_secret: "ufXEHFFg2otzUB8AlTFptyjp9Gg",
-});
-
-// Cloudinary storage configuration
-const storage = new CloudinaryStorage({
-  cloudinary: cloudinary,
-  params: async (req, file) => {
-    const extension = file.mimetype.split("/")[1];
-    const allowedFormats = ["jpg", "png", "jpeg"];
-
-    if (allowedFormats.includes(extension)) {
-      return {
-        folder: "real-estate-images",
-        format: extension,
-        public_id: `image_${Date.now()}`,
-        resource_type: "image",
-      };
-    } else {
-      throw new Error("Invalid file format");
-    }
-  },
-});
-
-const upload = multer({ storage: storage });
 
 const allowedOrigins = [
   "https://real-estate-mu-peach.vercel.app",
