@@ -21,6 +21,7 @@ app.use((0, cookie_parser_1.default)());
 const allowedOrigins = [
     "https://real-estate-mu-peach.vercel.app",
     "https://real-estate-dashboard-kappa.vercel.app",
+    "https://real-estate-dashboard-kappa.vercel.app/",
     "http://localhost:3000",
     "http://localhost:3001",
     "https://real-estate-mu-peach.vercel.app/",
