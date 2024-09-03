@@ -62,7 +62,8 @@ const filterObj = (obj, ...allowedFields) => {
 };
 // Update any user's information
 exports.updateUser = (0, catchAsync_1.default)(async (req, res, next) => {
-    const updates = req.body; // Extract updates from the request body
+    const { role } = req.body;
+    const updates = { role };
     const user = await userModel_1.default.findByIdAndUpdate(req.params.id, updates, {
         new: true,
         runValidators: true,

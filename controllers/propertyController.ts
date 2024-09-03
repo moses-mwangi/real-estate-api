@@ -1,10 +1,11 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import catchAsync from "../utils/catchAsync";
 import Property from "../models/propertyModel";
 
 import multer from "multer";
 import { v2 as cloudinary } from "cloudinary";
 import { CloudinaryStorage } from "multer-storage-cloudinary";
+import AppError from "../utils/appError";
 
 cloudinary.config({
   cloud_name: "dijocmuzg",
@@ -81,3 +82,23 @@ export const postProperty = [
     }
   }),
 ];
+
+export const updateProperty = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const updates = req.body;
+
+    const property = await Property.findByIdAndUpdate(req.params.id, updates, {
+      new: true,
+      runValidators: true,
+    });
+
+    if (!property) {
+      return next(new AppError("No user found with that ID", 401));
+    }
+
+    res.status(200).json({
+      status: "successful",
+      property,
+    });
+  }
+);

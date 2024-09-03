@@ -3,12 +3,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.postProperty = exports.getProperty = exports.getProperties = void 0;
+exports.updateProperty = exports.postProperty = exports.getProperty = exports.getProperties = void 0;
 const catchAsync_1 = __importDefault(require("../utils/catchAsync"));
 const propertyModel_1 = __importDefault(require("../models/propertyModel"));
 const multer_1 = __importDefault(require("multer"));
 const cloudinary_1 = require("cloudinary");
 const multer_storage_cloudinary_1 = require("multer-storage-cloudinary");
+const appError_1 = __importDefault(require("../utils/appError"));
 cloudinary_1.v2.config({
     cloud_name: "dijocmuzg",
     api_key: "125136887318797",
@@ -72,3 +73,17 @@ exports.postProperty = [
         }
     }),
 ];
+exports.updateProperty = (0, catchAsync_1.default)(async (req, res, next) => {
+    const updates = req.body;
+    const property = await propertyModel_1.default.findByIdAndUpdate(req.params.id, updates, {
+        new: true,
+        runValidators: true,
+    });
+    if (!property) {
+        return next(new appError_1.default("No user found with that ID", 401));
+    }
+    res.status(200).json({
+        status: "successful",
+        property,
+    });
+});

@@ -70,7 +70,9 @@ const filterObj = (obj: any, ...allowedFields: string[]) => {
 // Update any user's information
 export const updateUser = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    const updates = req.body; // Extract updates from the request body
+    const { role } = req.body;
+
+    const updates = { role };
     const user = await User.findByIdAndUpdate(req.params.id, updates, {
       new: true,
       runValidators: true,
