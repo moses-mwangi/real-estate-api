@@ -171,8 +171,7 @@ export const forgotPassword = catchAsync(
 
     await user.save({ validateBeforeSave: false });
 
-    //3) Send the email with the reset token
-    const resetURL = `http://localhost:3001/resetPassword?token=${resetToken}`;
+    const resetURL = `https://real-estate-dashboard-kappa.vercel.app/resetPassword?token=${resetToken}`;
 
     console.log("ResetUrl:", resetURL);
 

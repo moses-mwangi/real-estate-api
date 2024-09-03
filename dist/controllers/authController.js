@@ -111,8 +111,7 @@ exports.forgotPassword = (0, catchAsync_1.default)(async (req, res, next) => {
         .digest("hex");
     user.passwordResetExpires = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes
     await user.save({ validateBeforeSave: false });
-    //3) Send the email with the reset token
-    const resetURL = `http://localhost:3001/resetPassword?token=${resetToken}`;
+    const resetURL = `https://real-estate-dashboard-kappa.vercel.app/resetPassword?token=${resetToken}`;
     console.log("ResetUrl:", resetURL);
     const message = `Forgot your password? Submit a PATCH request with your new password and passwordConfirm to: ${resetURL}.\nIf you didn't forget your password, please ignore this email!`;
     try {
