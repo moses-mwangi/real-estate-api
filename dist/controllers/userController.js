@@ -81,8 +81,9 @@ exports.updateMe = (0, catchAsync_1.default)(async (req, res, next) => {
     if (req.body.password || req.body.passwordConfirm) {
         return next(new appError_1.default("This route is not for password updates. Please use /updateMyPassword", 400));
     }
-    const { name, role, photo } = req.body;
-    const updatedFields = { name, role, photo };
+    const { name, role, photo, phone } = req.body;
+    // const updatedFields: any = { name, role, photo, phone };
+    const updatedFields = { name, role, phone };
     const updatedUser = await userModel_1.default.findByIdAndUpdate(req.user.id, updatedFields, {
         new: true,
         runValidators: true,

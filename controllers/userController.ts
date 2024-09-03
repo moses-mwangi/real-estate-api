@@ -101,8 +101,9 @@ export const updateMe = catchAsync(
       );
     }
 
-    const { name, role, photo } = req.body;
-    const updatedFields: any = { name, role, photo };
+    const { name, role, photo, phone } = req.body;
+    // const updatedFields: any = { name, role, photo, phone };
+    const updatedFields: any = { name, role, phone };
 
     const updatedUser = await User.findByIdAndUpdate(
       (req as any).user.id,
