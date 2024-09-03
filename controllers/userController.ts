@@ -17,7 +17,7 @@ const storage = new CloudinaryStorage({
   cloudinary: cloudinary,
   params: async (req, file) => {
     const extension = file.mimetype.split("/")[1];
-    const allowedFormats = ["jpg", "png", "jpeg"];
+    const allowedFormats = ["jpg", "JPG", "png", "jpeg"];
 
     if (allowedFormats.includes(extension)) {
       return {

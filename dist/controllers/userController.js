@@ -19,7 +19,7 @@ const storage = new multer_storage_cloudinary_1.CloudinaryStorage({
     cloudinary: cloudinary_1.v2,
     params: async (req, file) => {
         const extension = file.mimetype.split("/")[1];
-        const allowedFormats = ["jpg", "png", "jpeg"];
+        const allowedFormats = ["jpg", "JPG", "png", "jpeg"];
         if (allowedFormats.includes(extension)) {
             return {
                 folder: "real-estate-images",
