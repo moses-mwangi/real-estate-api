@@ -6,6 +6,7 @@ import AppError from "../utils/appError";
 import multer from "multer";
 import { v2 as cloudinary } from "cloudinary";
 import { CloudinaryStorage } from "multer-storage-cloudinary";
+import { sendEmail } from "../utils/emailAgent";
 
 cloudinary.config({
   cloud_name: "dijocmuzg",
@@ -157,3 +158,39 @@ export const updateImage = [
     }
   },
 ];
+
+export const sendEmailToAgent = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    // 1) Get user based on posted email
+    const { email, agentEmail, name, message, phone } = req.body;
+
+    if (!email) {
+      return next(
+        new AppError("There is no user with that email address.", 404)
+      );
+    }
+
+    try {
+      await sendEmail({
+        email: email,
+        agentEmail,
+        subject: "Dira Luxury real-estate someome is intrested",
+        message,
+        phone,
+        name,
+      });
+
+      res.status(200).json({
+        status: "success",
+        message: "message sent to email!",
+      });
+    } catch (err) {
+      return next(
+        new AppError(
+          "There was an error sending the email. Try again later!",
+          500
+        )
+      );
+    }
+  }
+);

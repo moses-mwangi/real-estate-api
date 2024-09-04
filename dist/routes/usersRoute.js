@@ -6,6 +6,7 @@ const authController_1 = require("../controllers/authController");
 const router = (0, express_1.Router)();
 router.route("/updateMe").patch(authController_1.protect, userController_1.updateMe);
 router.route("/updateImage").post(authController_1.protect, userController_1.updateImage);
+router.route("/sendEmail").post(userController_1.sendEmailToAgent);
 router.route("/").get(userController_1.getUsers);
 router.route("/:id").get(userController_1.getUser).patch(userController_1.updateUser);
 exports.default = router;

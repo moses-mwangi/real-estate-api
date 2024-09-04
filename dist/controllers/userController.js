@@ -3,13 +3,14 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.updateImage = exports.updateMe = exports.updateUser = exports.getUser = exports.getUsers = void 0;
+exports.sendEmailToAgent = exports.updateImage = exports.updateMe = exports.updateUser = exports.getUser = exports.getUsers = void 0;
 const catchAsync_1 = __importDefault(require("../utils/catchAsync"));
 const userModel_1 = __importDefault(require("../models/userModel"));
 const appError_1 = __importDefault(require("../utils/appError"));
 const multer_1 = __importDefault(require("multer"));
 const cloudinary_1 = require("cloudinary");
 const multer_storage_cloudinary_1 = require("multer-storage-cloudinary");
+const emailAgent_1 = require("../utils/emailAgent");
 cloudinary_1.v2.config({
     cloud_name: "dijocmuzg",
     api_key: "125136887318797",
@@ -125,3 +126,27 @@ exports.updateImage = [
         }
     },
 ];
+exports.sendEmailToAgent = (0, catchAsync_1.default)(async (req, res, next) => {
+    // 1) Get user based on posted email
+    const { email, agentEmail, name, message, phone } = req.body;
+    if (!email) {
+        return next(new appError_1.default("There is no user with that email address.", 404));
+    }
+    try {
+        await (0, emailAgent_1.sendEmail)({
+            email: email,
+            agentEmail,
+            subject: "Dira Luxury real-estate someome is intrested",
+            message,
+            phone,
+            name,
+        });
+        res.status(200).json({
+            status: "success",
+            message: "message sent to email!",
+        });
+    }
+    catch (err) {
+        return next(new appError_1.default("There was an error sending the email. Try again later!", 500));
+    }
+});
