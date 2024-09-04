@@ -5,13 +5,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const cors_1 = __importDefault(require("cors"));
-const mime_types_1 = __importDefault(require("mime-types"));
-const path_1 = __importDefault(require("path"));
 const appError_1 = __importDefault(require("./utils/appError"));
 const errorController_1 = __importDefault(require("./controllers/errorController"));
 const usersRoute_1 = __importDefault(require("./routes/usersRoute"));
 const authRoute_1 = __importDefault(require("./routes/authRoute"));
-const agentRoute_1 = __importDefault(require("./routes/agentRoute"));
 const propertyRoute_1 = __importDefault(require("./routes/propertyRoute"));
 const toursRoute_1 = __importDefault(require("./routes/toursRoute"));
 const cookie_parser_1 = __importDefault(require("cookie-parser"));
@@ -38,24 +35,12 @@ const corsOptions = {
     credentials: true,
 };
 app.use((0, cors_1.default)(corsOptions));
-app.use("/agents", express_1.default.static(path_1.default.join(__dirname, "public/agents"), {
-    setHeaders: (res, filePath) => {
-        const mimeType = mime_types_1.default.lookup(filePath);
-        if (mimeType) {
-            res.setHeader("Content-Type", mimeType);
-        }
-        else {
-            console.warn(`Cannot determine MIME type for file: ${filePath}`);
-        }
-    },
-}));
 app.use((req, res, next) => {
     console.log("Testing middleware");
     next();
 });
 app.use("/api/users", usersRoute_1.default);
 app.use("/api/auth", authRoute_1.default);
-app.use("/api/agents", agentRoute_1.default);
 app.use("/api/property", propertyRoute_1.default);
 app.use("/api/tours", toursRoute_1.default);
 app.get("/", (req, res) => {

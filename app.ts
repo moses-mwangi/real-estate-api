@@ -7,7 +7,6 @@ import AppError from "./utils/appError";
 import globalErrorHandler from "./controllers/errorController";
 import usersRoute from "./routes/usersRoute";
 import authRoute from "./routes/authRoute";
-import agentRoute from "./routes/agentRoute";
 import propertyRoute from "./routes/propertyRoute";
 import tourRoute from "./routes/toursRoute";
 import cookieParser from "cookie-parser";
@@ -41,20 +40,6 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 
-app.use(
-  "/agents",
-  express.static(path.join(__dirname, "public/agents"), {
-    setHeaders: (res, filePath) => {
-      const mimeType = mimeTypes.lookup(filePath);
-      if (mimeType) {
-        res.setHeader("Content-Type", mimeType);
-      } else {
-        console.warn(`Cannot determine MIME type for file: ${filePath}`);
-      }
-    },
-  })
-);
-
 app.use((req, res, next) => {
   console.log("Testing middleware");
   next();
@@ -62,7 +47,6 @@ app.use((req, res, next) => {
 
 app.use("/api/users", usersRoute);
 app.use("/api/auth", authRoute);
-app.use("/api/agents", agentRoute);
 app.use("/api/property", propertyRoute);
 app.use("/api/tours", tourRoute);
 
