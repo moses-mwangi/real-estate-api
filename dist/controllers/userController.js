@@ -23,7 +23,8 @@ const storage = new multer_storage_cloudinary_1.CloudinaryStorage({
         const allowedFormats = ["jpg", "JPG", "png", "jpeg"];
         if (allowedFormats.includes(extension)) {
             return {
-                folder: "real-estate-images",
+                // folder: "real-estate-images",
+                folder: "real-estate-users-images",
                 format: extension,
                 public_id: `image_${Date.now()}`,
                 resource_type: "image",

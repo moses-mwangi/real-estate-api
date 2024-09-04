@@ -22,7 +22,8 @@ const storage = new CloudinaryStorage({
 
     if (allowedFormats.includes(extension)) {
       return {
-        folder: "real-estate-images",
+        // folder: "real-estate-images",
+        folder: "real-estate-users-images",
         format: extension,
         public_id: `image_${Date.now()}`,
         resource_type: "image",
