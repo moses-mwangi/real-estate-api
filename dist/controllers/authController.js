@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.updatePassword = exports.resetPassword = exports.forgotPassword = exports.getMe = exports.protect = exports.loginUser = exports.registerUser = void 0;
+exports.updatePassword = exports.resetPassword = exports.forgotPasswordForNormalUser = exports.forgotPassword = exports.getMe = exports.protect = exports.loginUser = exports.registerUser = void 0;
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const crypto_1 = __importDefault(require("crypto"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
@@ -123,6 +123,44 @@ exports.forgotPassword = (0, catchAsync_1.default)(async (req, res, next) => {
         res.status(200).json({
             status: "success",
             message: "Token sent to email!",
+            resetToken,
+        });
+    }
+    catch (err) {
+        user.passwordResetToken = undefined;
+        user.passwordResetExpires = undefined;
+        await user.save({ validateBeforeSave: false });
+        return next(new appError_1.default("There was an error sending the email. Try again later!", 500));
+    }
+});
+exports.forgotPasswordForNormalUser = (0, catchAsync_1.default)(async (req, res, next) => {
+    // 1) Get user based on posted email
+    const user = await userModel_1.default.findOne({ email: req.body.email });
+    if (!user) {
+        return next(new appError_1.default("There is no user with that email address.", 404));
+    }
+    // 2) Generate a random reset token
+    const resetToken = crypto_1.default.randomBytes(32).toString("hex");
+    console.log(resetToken);
+    user.passwordResetToken = crypto_1.default
+        .createHash("sha256")
+        .update(resetToken)
+        .digest("hex");
+    user.passwordResetExpires = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes
+    await user.save({ validateBeforeSave: false });
+    const resetURL = `http://127.0.0.1:3000?token=${resetToken}`;
+    console.log("ResetUrl:", resetURL);
+    const message = `Forgot your password? Submit a PATCH request with your new password and passwordConfirm to: ${resetURL}.\nIf you didn't forget your password, please ignore this email!`;
+    try {
+        await (0, email_1.sendEmail)({
+            email: user.email,
+            subject: "Your password reset token (valid for 10 min)",
+            message,
+        });
+        res.status(200).json({
+            status: "success",
+            message: "Token sent to email!",
+            resetToken,
         });
     }
     catch (err) {
