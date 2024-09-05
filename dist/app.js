@@ -23,7 +23,6 @@ const allowedOrigins = [
     "http://localhost:3001",
     "https://real-estate-mu-peach.vercel.app/",
 ];
-//http://localhost:3001
 const corsOptions = {
     origin: (origin, callback) => {
         if (allowedOrigins.includes(origin) || !origin) {

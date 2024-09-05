@@ -24,8 +24,6 @@ const allowedOrigins = [
   "https://real-estate-mu-peach.vercel.app/",
 ];
 
-//http://localhost:3001
-
 const corsOptions = {
   origin: (
     origin: string | undefined,
