@@ -89,8 +89,15 @@ exports.updateProperty = (0, catchAsync_1.default)(async (req, res, next) => {
 });
 exports.deleteProperty = (0, catchAsync_1.default)(async (req, res) => {
     const deleted = await propertyModel_1.default.findByIdAndDelete(req.params.id);
-    res.status(4001).json({
-        status: "succesfull deleted",
+    if (!deleted) {
+        return res.status(404).json({
+            status: "fail",
+            message: "No property found with that ID",
+        });
+    }
+    res.status(200).json({
+        status: "success",
+        message: "Successfully deleted the property",
         property: deleted,
     });
 });
