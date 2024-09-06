@@ -56,18 +56,3 @@ const propertyShema = new mongoose_1.Schema({
 });
 const Property = (0, mongoose_1.model)("Property", propertyShema);
 exports.default = Property;
-// interface Property {
-//   image: [];
-//   descrption: string;
-//   about: string;
-//   type: string;
-//   bathrooms: number;
-//   bedrooms: number;
-//   Garages: number;
-//   area: number;
-//   createdAt: Date;
-//   price: number;
-//   city: string;
-//   zip: number;
-//   Address: string;
-// }

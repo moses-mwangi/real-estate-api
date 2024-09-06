@@ -102,3 +102,14 @@ export const updateProperty = catchAsync(
     });
   }
 );
+
+export const deleteProperty = catchAsync(
+  async (req: Request, res: Response) => {
+    const deleted = await Property.findByIdAndDelete();
+
+    res.status(4001).json({
+      status: "succesfull deleted",
+      property: deleted,
+    });
+  }
+);

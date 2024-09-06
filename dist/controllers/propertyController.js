@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.updateProperty = exports.postProperty = exports.getProperty = exports.getProperties = void 0;
+exports.deleteProperty = exports.updateProperty = exports.postProperty = exports.getProperty = exports.getProperties = void 0;
 const catchAsync_1 = __importDefault(require("../utils/catchAsync"));
 const propertyModel_1 = __importDefault(require("../models/propertyModel"));
 const multer_1 = __importDefault(require("multer"));
@@ -85,5 +85,12 @@ exports.updateProperty = (0, catchAsync_1.default)(async (req, res, next) => {
     res.status(200).json({
         status: "successful",
         property,
+    });
+});
+exports.deleteProperty = (0, catchAsync_1.default)(async (req, res) => {
+    const deleted = await propertyModel_1.default.findByIdAndDelete();
+    res.status(4001).json({
+        status: "succesfull deleted",
+        property: deleted,
     });
 });

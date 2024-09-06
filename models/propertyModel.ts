@@ -36,19 +36,3 @@ const propertyShema: Schema = new Schema({
 const Property = model("Property", propertyShema);
 
 export default Property;
-
-// interface Property {
-//   image: [];
-//   descrption: string;
-//   about: string;
-//   type: string;
-//   bathrooms: number;
-//   bedrooms: number;
-//   Garages: number;
-//   area: number;
-//   createdAt: Date;
-//   price: number;
-//   city: string;
-//   zip: number;
-//   Address: string;
-// }
