@@ -105,7 +105,7 @@ export const updateProperty = catchAsync(
 
 export const deleteProperty = catchAsync(
   async (req: Request, res: Response) => {
-    const deleted = await Property.findByIdAndDelete();
+    const deleted = await Property.findByIdAndDelete(req.params.id);
 
     res.status(4001).json({
       status: "succesfull deleted",
