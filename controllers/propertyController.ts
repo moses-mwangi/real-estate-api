@@ -56,7 +56,7 @@ export const getProperty = catchAsync(async (req: Request, res: Response) => {
 });
 
 export const postProperty = [
-  upload.array("images", 5),
+  upload.array("images"),
   catchAsync(async (req: Request, res: Response) => {
     if (!req.files || !Array.isArray(req.files)) {
       return res.status(400).json({ message: "No files uploaded" });

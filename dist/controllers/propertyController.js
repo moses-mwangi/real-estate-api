@@ -51,7 +51,7 @@ exports.getProperty = (0, catchAsync_1.default)(async (req, res) => {
     });
 });
 exports.postProperty = [
-    upload.array("images", 5),
+    upload.array("images"),
     (0, catchAsync_1.default)(async (req, res) => {
         if (!req.files || !Array.isArray(req.files)) {
             return res.status(400).json({ message: "No files uploaded" });
