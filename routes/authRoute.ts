@@ -7,9 +7,14 @@ import {
   forgotPassword,
   resetPassword,
   updatePassword,
+  sendingOtpToEmail,
+  deleteOtp,
 } from "../controllers/authController";
 
 const router = Router();
+
+router.route("/verifyOtp").post(sendingOtpToEmail);
+router.route("/deleteOtp").delete(deleteOtp);
 
 router.route("/register").post(registerUser);
 router.route("/login").post(loginUser);

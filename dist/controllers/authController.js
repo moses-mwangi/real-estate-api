@@ -3,14 +3,16 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.updatePassword = exports.resetPassword = exports.forgotPasswordForNormalUser = exports.forgotPassword = exports.getMe = exports.protect = exports.loginUser = exports.registerUser = void 0;
+exports.updatePassword = exports.resetPassword = exports.forgotPasswordForNormalUser = exports.forgotPassword = exports.getMe = exports.protect = exports.loginUser = exports.deleteOtp = exports.registerUser = exports.sendingOtpToEmail = void 0;
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const crypto_1 = __importDefault(require("crypto"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const email_1 = require("../utils/email");
+const sendingOtp_1 = require("../utils/sendingOtp");
 const catchAsync_1 = __importDefault(require("../utils/catchAsync"));
 const userModel_1 = __importDefault(require("../models/userModel"));
 const appError_1 = __importDefault(require("../utils/appError"));
+const otpModel_1 = __importDefault(require("../models/otpModel"));
 const signToken = (id) => {
     return jsonwebtoken_1.default.sign({ id }, "this-is-my-jwt-secret-moses-muni", {
         expiresIn: "90d",
@@ -32,11 +34,52 @@ const createSendToken = (user, statusCode, res) => {
         user,
     });
 };
+//// USER REGISTRATION AND EMAIL VERIFICATION BY SENDING OTP TO POSTED EMAIL
+const generateOTP = () => {
+    return Math.floor(100000 + Math.random() * 900000); // 6-digit OTP
+};
+const sendingOtpToEmail = async (req, res) => {
+    const { email, password } = req.body;
+    const otp = generateOTP();
+    await otpModel_1.default.create({
+        email,
+        password,
+        otp,
+        expiresAt: new Date(Date.now() + 10 * 60 * 1000),
+    });
+    const message = `Your Email Verification OTP: ${otp}.\n:Please Put Otp in the Otp field for complete Registration`;
+    const subject = "Email Verifation OTP";
+    await (0, sendingOtp_1.sendOtpEmail)({ email, subject, message });
+    res.send({ msg: "OTP sent to email" });
+};
+exports.sendingOtpToEmail = sendingOtpToEmail;
 exports.registerUser = (0, catchAsync_1.default)(async (req, res, next) => {
+    const { email, otp } = req.body;
+    const otpNumber = parseInt(otp);
+    const record = await otpModel_1.default.findOne({ email, otp: otpNumber });
+    // const record = await OtpModel.findOne({ email, otp, expiresAt: { $gt: Date.now() } });
+    console.log(record);
+    if (!record) {
+        return res.status(400).send("Invalid or expired OTP");
+    }
+    const newOne = { email: record?.email, password: record.password };
     const newUser = await userModel_1.default.create(req.body);
     createSendToken(newUser, 200, res);
     req.user = newUser;
 });
+exports.deleteOtp = (0, catchAsync_1.default)(async (req, res, next) => {
+    const { email } = req.query;
+    console.log(email);
+    if (!email) {
+        return res.status(400).json({ message: "Email is required" });
+    }
+    const record = await otpModel_1.default.findOneAndDelete({ email });
+    if (!record) {
+        return res.status(400).send("Invalid Credentials");
+    }
+    res.json({ status: "Succesfully deleted", user: record });
+});
+/////////////////////////END OF USER REGISTRATION AND EMAIL VERIFICATION
 exports.loginUser = (0, catchAsync_1.default)(async (req, res, next) => {
     const { email, password } = req.body;
     if (!email || !password) {

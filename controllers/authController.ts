@@ -3,10 +3,11 @@ import bcrypt from "bcryptjs";
 import crypto from "crypto";
 import jwt from "jsonwebtoken";
 import { sendEmail } from "../utils/email";
-
+import { sendOtpEmail } from "../utils/sendingOtp";
 import catchAsync from "../utils/catchAsync";
 import User, { IUser } from "../models/userModel";
 import AppError from "../utils/appError";
+import OtpModel from "../models/otpModel";
 
 interface AuthenticatedRequest extends Request {
   user?: IUser;
@@ -46,8 +47,49 @@ const createSendToken = (
   });
 };
 
+//// USER REGISTRATION AND EMAIL VERIFICATION BY SENDING OTP TO POSTED EMAIL
+
+const generateOTP = () => {
+  return Math.floor(100000 + Math.random() * 900000); // 6-digit OTP
+};
+
+export const sendingOtpToEmail = async (req: Request, res: Response) => {
+  const { email, password } = req.body;
+  const otp = generateOTP();
+
+  await OtpModel.create({
+    email,
+    password,
+    otp,
+    expiresAt: new Date(Date.now() + 10 * 60 * 1000),
+  });
+
+  const message = `Your Email Verification OTP: ${otp}.\n:Please Put Otp in the Otp field for complete Registration`;
+
+  const subject = "Email Verifation OTP";
+
+  await sendOtpEmail({ email, subject, message });
+
+  res.send({ msg: "OTP sent to email" });
+};
+
 export const registerUser = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
+    const { email, otp } = req.body;
+    const otpNumber = parseInt(otp);
+
+    const record = await OtpModel.findOne({ email, otp: otpNumber });
+
+    // const record = await OtpModel.findOne({ email, otp, expiresAt: { $gt: Date.now() } });
+
+    console.log(record);
+
+    if (!record) {
+      return res.status(400).send("Invalid or expired OTP");
+    }
+
+    const newOne = { email: record?.email, password: record.password };
+
     const newUser = await User.create(req.body);
 
     createSendToken(newUser, 200, res);
@@ -55,6 +97,27 @@ export const registerUser = catchAsync(
     req.user = newUser;
   }
 );
+
+export const deleteOtp = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const { email } = req.query;
+
+    console.log(email);
+
+    if (!email) {
+      return res.status(400).json({ message: "Email is required" });
+    }
+
+    const record = await OtpModel.findOneAndDelete({ email });
+
+    if (!record) {
+      return res.status(400).send("Invalid Credentials");
+    }
+    res.json({ status: "Succesfully deleted", user: record });
+  }
+);
+
+/////////////////////////END OF USER REGISTRATION AND EMAIL VERIFICATION
 
 export const loginUser = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
