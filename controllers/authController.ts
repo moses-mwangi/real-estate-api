@@ -78,9 +78,13 @@ export const registerUser = catchAsync(
     const { email, otp } = req.body;
     const otpNumber = parseInt(otp);
 
-    const record = await OtpModel.findOne({ email, otp: otpNumber });
+    // const record = await OtpModel.findOne({ email, otp: otpNumber });
 
-    // const record = await OtpModel.findOne({ email, otp, expiresAt: { $gt: Date.now() } });
+    const record = await OtpModel.findOne({
+      email,
+      otp: otpNumber,
+      expiresAt: { $gt: Date.now() },
+    });
 
     console.log(record);
 

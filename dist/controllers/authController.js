@@ -56,8 +56,12 @@ exports.sendingOtpToEmail = sendingOtpToEmail;
 exports.registerUser = (0, catchAsync_1.default)(async (req, res, next) => {
     const { email, otp } = req.body;
     const otpNumber = parseInt(otp);
-    const record = await otpModel_1.default.findOne({ email, otp: otpNumber });
-    // const record = await OtpModel.findOne({ email, otp, expiresAt: { $gt: Date.now() } });
+    // const record = await OtpModel.findOne({ email, otp: otpNumber });
+    const record = await otpModel_1.default.findOne({
+        email,
+        otp: otpNumber,
+        expiresAt: { $gt: Date.now() },
+    });
     console.log(record);
     if (!record) {
         return res.status(400).send("Invalid or expired OTP");
