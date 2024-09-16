@@ -25,5 +25,6 @@ router.route("/updateMyPassword").patch(updatePassword);
 router.get("/me", protect, getMe);
 
 router.route("/updatePassword").patch(protect, updatePassword);
+// router.route("/updatePassword").patch(updatePassword);
 
 export default router;

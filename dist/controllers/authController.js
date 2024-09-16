@@ -249,6 +249,7 @@ exports.resetPassword = (0, catchAsync_1.default)(async (req, res, next) => {
 });
 exports.updatePassword = (0, catchAsync_1.default)(async (req, res, next) => {
     const user = await userModel_1.default.findById(req.user._id).select("+password");
+    // const user = await User.findById(req.body.id).select("+password");
     if (!user) {
         return next(new appError_1.default("No user with that ID found", 401));
     }
