@@ -14,7 +14,7 @@ export interface IUser extends Document {
   date: Date;
   passwordResetToken?: string;
   passwordResetExpires?: Date;
-  otp: number;
+  // otp: number;
 }
 
 const UserSchema = new Schema<IUser>({
@@ -27,7 +27,7 @@ const UserSchema = new Schema<IUser>({
     required: true,
     unique: true,
   },
-  otp: { type: Number, required: true },
+  // otp: { type: Number },
   password: {
     type: String,
     required: true,

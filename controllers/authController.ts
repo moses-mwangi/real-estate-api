@@ -372,8 +372,7 @@ export const resetPassword = catchAsync(
 
 export const updatePassword = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    const user = await User.findById((req as any).user._id).select("+password");
-    // const user = await User.findById(req.body.id).select("+password");
+    const user = await User.findById((req as any).user.id).select("+password");
 
     if (!user) {
       return next(new AppError("No user with that ID found", 401));
@@ -384,6 +383,8 @@ export const updatePassword = catchAsync(
       user.password
     );
 
+    console.log(isPasswordCorrect);
+
     if (!isPasswordCorrect) {
       return next(new AppError("Your current password is incorrect.", 401));
     }
@@ -391,8 +392,19 @@ export const updatePassword = catchAsync(
     user.password = req.body.password;
     user.passwordConfirm = req.body.passwordConfirm;
 
-    await user.save();
+    // await user.save();
 
-    createSendToken(user, 200, res);
+    // createSendToken(user, 200, res);
+
+    try {
+      // Save the updated user
+      await user.save();
+      createSendToken(user, 200, res);
+    } catch (error) {
+      console.error("Error saving updated password:", error);
+      return next(
+        new AppError("Error updating password. Try again later.", 500)
+      );
+    }
   }
 );
