@@ -248,17 +248,26 @@ exports.resetPassword = (0, catchAsync_1.default)(async (req, res, next) => {
     createSendToken(user, 200, res);
 });
 exports.updatePassword = (0, catchAsync_1.default)(async (req, res, next) => {
-    const user = await userModel_1.default.findById(req.user._id).select("+password");
-    // const user = await User.findById(req.body.id).select("+password");
+    const user = await userModel_1.default.findById(req.user.id).select("+password");
     if (!user) {
         return next(new appError_1.default("No user with that ID found", 401));
     }
     const isPasswordCorrect = await bcryptjs_1.default.compare(req.body.passwordCurrent, user.password);
+    console.log(isPasswordCorrect);
     if (!isPasswordCorrect) {
         return next(new appError_1.default("Your current password is incorrect.", 401));
     }
     user.password = req.body.password;
     user.passwordConfirm = req.body.passwordConfirm;
-    await user.save();
-    createSendToken(user, 200, res);
+    // await user.save();
+    // createSendToken(user, 200, res);
+    try {
+        // Save the updated user
+        await user.save();
+        createSendToken(user, 200, res);
+    }
+    catch (error) {
+        console.error("Error saving updated password:", error);
+        return next(new appError_1.default("Error updating password. Try again later.", 500));
+    }
 });
