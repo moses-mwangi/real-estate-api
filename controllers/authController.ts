@@ -78,8 +78,6 @@ export const registerUser = catchAsync(
     const { email, otp } = req.body;
     const otpNumber = parseInt(otp);
 
-    // const record = await OtpModel.findOne({ email, otp: otpNumber });
-
     const record = await OtpModel.findOne({
       email,
       otp: otpNumber,
@@ -120,6 +118,19 @@ export const deleteOtp = catchAsync(
     res.json({ status: "Succesfully deleted", user: record });
   }
 );
+
+export const getOtpUsers = catchAsync(async (req: Request, res: Response) => {
+  const users = await OtpModel.find();
+
+  if (!users) {
+    return res.json({ status: "No user has being found" });
+  }
+
+  res.status(200).json({
+    status: "succefully",
+    users,
+  });
+});
 
 /////////////////////////END OF USER REGISTRATION AND EMAIL VERIFICATION
 

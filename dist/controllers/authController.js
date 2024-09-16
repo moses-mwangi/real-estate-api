@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.updatePassword = exports.resetPassword = exports.forgotPasswordForNormalUser = exports.forgotPassword = exports.getMe = exports.protect = exports.loginUser = exports.deleteOtp = exports.registerUser = exports.sendingOtpToEmail = void 0;
+exports.updatePassword = exports.resetPassword = exports.forgotPasswordForNormalUser = exports.forgotPassword = exports.getMe = exports.protect = exports.loginUser = exports.getOtpUsers = exports.deleteOtp = exports.registerUser = exports.sendingOtpToEmail = void 0;
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const crypto_1 = __importDefault(require("crypto"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
@@ -56,7 +56,6 @@ exports.sendingOtpToEmail = sendingOtpToEmail;
 exports.registerUser = (0, catchAsync_1.default)(async (req, res, next) => {
     const { email, otp } = req.body;
     const otpNumber = parseInt(otp);
-    // const record = await OtpModel.findOne({ email, otp: otpNumber });
     const record = await otpModel_1.default.findOne({
         email,
         otp: otpNumber,
@@ -82,6 +81,16 @@ exports.deleteOtp = (0, catchAsync_1.default)(async (req, res, next) => {
         return res.status(400).send("Invalid Credentials");
     }
     res.json({ status: "Succesfully deleted", user: record });
+});
+exports.getOtpUsers = (0, catchAsync_1.default)(async (req, res) => {
+    const users = await otpModel_1.default.find();
+    if (!users) {
+        return res.json({ status: "No user has being found" });
+    }
+    res.status(200).json({
+        status: "succefully",
+        users,
+    });
 });
 /////////////////////////END OF USER REGISTRATION AND EMAIL VERIFICATION
 exports.loginUser = (0, catchAsync_1.default)(async (req, res, next) => {
