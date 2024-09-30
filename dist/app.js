@@ -24,6 +24,8 @@ const allowedOrigins = [
     "http://localhost:3001",
     "https://house.bomac.io",
     "https://house.bomac.io/",
+    "https://admin.bomac.io",
+    "https://admin.bomac.io/",
 ];
 const corsOptions = {
     origin: (origin, callback) => {
