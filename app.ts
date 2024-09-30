@@ -1,7 +1,5 @@
 import express from "express";
 import cors from "cors";
-import mimeTypes from "mime-types";
-import path from "path";
 
 import AppError from "./utils/appError";
 import globalErrorHandler from "./controllers/errorController";
@@ -19,9 +17,13 @@ const allowedOrigins = [
   "https://real-estate-mu-peach.vercel.app",
   "https://real-estate-dashboard-kappa.vercel.app",
   "https://real-estate-dashboard-kappa.vercel.app/",
+  "https://real-estate-mu-peach.vercel.app/",
+
   "http://localhost:3000",
   "http://localhost:3001",
-  "https://real-estate-mu-peach.vercel.app/",
+
+  "https://house.bomac.io",
+  "https://house.bomac.io/",
 ];
 
 const corsOptions = {

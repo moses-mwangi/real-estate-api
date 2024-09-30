@@ -19,9 +19,11 @@ const allowedOrigins = [
     "https://real-estate-mu-peach.vercel.app",
     "https://real-estate-dashboard-kappa.vercel.app",
     "https://real-estate-dashboard-kappa.vercel.app/",
+    "https://real-estate-mu-peach.vercel.app/",
     "http://localhost:3000",
     "http://localhost:3001",
-    "https://real-estate-mu-peach.vercel.app/",
+    "https://house.bomac.io",
+    "https://house.bomac.io/",
 ];
 const corsOptions = {
     origin: (origin, callback) => {
