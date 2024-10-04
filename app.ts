@@ -23,8 +23,9 @@ const allowedOrigins = [
   "http://localhost:3001",
 
   "https://house.bomac.io",
-  "https://house.bomac.io/",
   "https://admin.bomac.io",
+
+  "https://house.bomac.io/",
   "https://admin.bomac.io/",
 ];
 
