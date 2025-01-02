@@ -14,6 +14,11 @@ app.use(express.json());
 app.use(cookieParser());
 
 const allowedOrigins = [
+  "https://house.bomac.io",
+  "https://admin.bomac.io",
+  "https://house.bomac.io/",
+  "https://admin.bomac.io/",
+
   "https://real-estate-mu-peach.vercel.app",
   "https://real-estate-dashboard-kappa.vercel.app",
   "https://real-estate-dashboard-kappa.vercel.app/",
@@ -21,14 +26,6 @@ const allowedOrigins = [
 
   "http://localhost:3000",
   "http://localhost:3001",
-
-  "https://house.bomac.io",
-  "https://admin.bomac.io",
-  "https://admin.bomac.io",
-
-  "https://house.bomac.io/",
-  "https://admin.bomac.io/",
-  "https://admin.bomac.io/",
 ];
 
 const corsOptions = {
