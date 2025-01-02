@@ -18,8 +18,8 @@ app.use((0, cookie_parser_1.default)());
 const allowedOrigins = [
     "https://house.bomac.io",
     "https://admin.bomac.io",
-    "https://house.bomac.io/",
-    "https://admin.bomac.io/",
+    // "https://house.bomac.io/",
+    // "https://admin.bomac.io/",
     "https://real-estate-mu-peach.vercel.app",
     "https://real-estate-dashboard-kappa.vercel.app",
     "https://real-estate-dashboard-kappa.vercel.app/",
